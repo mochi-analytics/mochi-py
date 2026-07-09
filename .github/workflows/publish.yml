@@ -1,0 +1,38 @@
+name: Publish
+
+# Manual fallback only. Automatic publishing on release runs from
+# release-please.yml -- see the comment on its `pypi` job for why.
+on:
+  workflow_dispatch:
+    inputs:
+      package:
+        description: "package to publish"
+        required: true
+        type: choice
+        options:
+          - core
+          - discordpy
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  pypi:
+    name: Publish PyPI package
+    runs-on: ubuntu-latest
+    # Must match the "Environment name" on both PyPI trusted publishers.
+    environment: pypi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Build distributions
+        run: |
+          python -m pip install --upgrade pip build
+          python -m build "packages/${{ inputs.package }}" --outdir dist
+      - name: Publish to PyPI (trusted publishing)
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          packages-dir: dist

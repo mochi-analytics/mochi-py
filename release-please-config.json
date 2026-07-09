@@ -1,0 +1,28 @@
+{
+  "$schema": "https://raw.githubusercontent.com/googleapis/release-please/main/schemas/config.json",
+  "separate-pull-requests": true,
+  "packages": {
+    "packages/core": {
+      "component": "core",
+      "package-name": "mochi-analytics",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics/__init__.py"
+        }
+      ]
+    },
+    "packages/discordpy": {
+      "component": "discordpy",
+      "package-name": "mochi-analytics-discordpy",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_discordpy/__init__.py"
+        }
+      ]
+    }
+  }
+}

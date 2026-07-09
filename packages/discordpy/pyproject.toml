@@ -1,0 +1,38 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mochi-analytics-discordpy"
+version = "1.0.0"
+description = "discord.py adapter for Mochi - auto-instruments commands, guild joins/leaves, and health snapshots"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.9"
+keywords = ["discord", "discord.py", "bot", "analytics", "mochi"]
+authors = [{ name = "Mochi Analytics", email = "contact@bwmp.dev" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+]
+dependencies = [
+    "mochi-analytics>=1.0.0",
+    "discord.py>=2.3",
+]
+
+[project.urls]
+Homepage = "https://github.com/mochi-analytics/mochi-py"
+Repository = "https://github.com/mochi-analytics/mochi-py"
+"Bug Tracker" = "https://github.com/mochi-analytics/mochi-py/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mochi_analytics_discordpy"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]

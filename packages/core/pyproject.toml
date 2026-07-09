@@ -1,0 +1,35 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[project]
+name = "mochi-analytics"
+version = "1.0.0"
+description = "Core client for Mochi - self-hosted analytics for Discord bots"
+readme = "README.md"
+license = "Apache-2.0"
+requires-python = ">=3.9"
+keywords = ["discord", "bot", "analytics", "mochi"]
+authors = [{ name = "Mochi Analytics", email = "contact@bwmp.dev" }]
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: Apache Software License",
+    "Framework :: AsyncIO",
+    "Intended Audience :: Developers",
+]
+dependencies = ["aiohttp>=3.9"]
+
+[project.urls]
+Homepage = "https://github.com/mochi-analytics/mochi-py"
+Repository = "https://github.com/mochi-analytics/mochi-py"
+"Bug Tracker" = "https://github.com/mochi-analytics/mochi-py/issues"
+
+[project.optional-dependencies]
+dev = ["pytest>=8", "pytest-asyncio>=0.23"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mochi_analytics"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
