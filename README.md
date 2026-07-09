@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="assets/logo.png" alt="" width="96" height="96">
+</p>
+
 # Mochi Python SDK
 
 Python SDK packages for [Mochi](https://github.com/mochi-analytics/mochi), self-hosted analytics for Discord bots.
