@@ -21,7 +21,7 @@ client = discord.Client(intents=discord.Intents.default())
 detach = attach_mochi(client, mochi)
 ```
 
-See the repository docs for the full discord.py guide.
+See the [discord.py guide](https://docs.mochis.dev/sdks/discordpy) for the full documentation.
 
 ## License
 
