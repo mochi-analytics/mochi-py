@@ -6,7 +6,8 @@ on:
   pull_request:
 
 jobs:
-  test:
+  core:
+    name: core + discordpy
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -27,3 +28,57 @@ jobs:
           pip install build
           python -m build packages/core
           python -m build packages/discordpy
+
+  adapters:
+    name: nextcord + disnake + hikari + interactions
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        # These adapters require 3.10+; discord.py's 3.9 support is covered above.
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "packages/core[dev]" \
+            -e "packages/nextcord[dev]" \
+            -e "packages/disnake[dev]" \
+            -e "packages/hikari[dev]" \
+            -e "packages/interactions[dev]"
+      - name: Run tests
+        run: pytest packages/core packages/nextcord packages/disnake packages/hikari packages/interactions
+      - name: Build wheels
+        run: |
+          pip install build
+          python -m build packages/nextcord
+          python -m build packages/disnake
+          python -m build packages/hikari
+          python -m build packages/interactions
+
+  # Py-cord ships the `discord` module, exactly as discord.py does, so it can
+  # never share an environment with packages/discordpy.
+  pycord:
+    name: pycord
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.10", "3.12"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+      - name: Install packages
+        run: |
+          python -m pip install --upgrade pip
+          pip install -e "packages/core[dev]" -e "packages/pycord[dev]"
+      - name: Run tests
+        run: pytest packages/pycord
+      - name: Build wheel
+        run: |
+          pip install build
+          python -m build packages/pycord

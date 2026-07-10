@@ -23,6 +23,61 @@
           "path": "src/mochi_analytics_discordpy/__init__.py"
         }
       ]
+    },
+    "packages/nextcord": {
+      "component": "nextcord",
+      "package-name": "mochi-analytics-nextcord",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_nextcord/__init__.py"
+        }
+      ]
+    },
+    "packages/disnake": {
+      "component": "disnake",
+      "package-name": "mochi-analytics-disnake",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_disnake/__init__.py"
+        }
+      ]
+    },
+    "packages/pycord": {
+      "component": "pycord",
+      "package-name": "mochi-analytics-pycord",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_pycord/__init__.py"
+        }
+      ]
+    },
+    "packages/hikari": {
+      "component": "hikari",
+      "package-name": "mochi-analytics-hikari",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_hikari/__init__.py"
+        }
+      ]
+    },
+    "packages/interactions": {
+      "component": "interactions",
+      "package-name": "mochi-analytics-interactions",
+      "release-type": "python",
+      "extra-files": [
+        {
+          "type": "generic",
+          "path": "src/mochi_analytics_interactions/__init__.py"
+        }
+      ]
     }
   }
 }

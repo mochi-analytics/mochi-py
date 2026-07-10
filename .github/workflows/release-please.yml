@@ -28,7 +28,7 @@ jobs:
     needs: release-please
     if: needs.release-please.outputs.releases_created == 'true'
     runs-on: ubuntu-latest
-    # Must match the "Environment name" on both PyPI trusted publishers.
+    # Must match the "Environment name" on every PyPI trusted publisher.
     environment: pypi
     permissions:
       contents: read

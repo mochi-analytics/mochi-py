@@ -10,8 +10,22 @@ Python SDK packages for [Mochi](https://github.com/mochi-analytics/mochi), self-
 
 - `mochi-analytics` — asyncio-native batching HTTP client for Mochi ingest and snapshot APIs
 - `mochi-analytics-discordpy` — discord.py v2 adapter for command, guild, and health instrumentation
+- `mochi-analytics-nextcord` — nextcord adapter
+- `mochi-analytics-disnake` — disnake adapter
+- `mochi-analytics-pycord` — Py-cord adapter
+- `mochi-analytics-hikari` — hikari adapter
+- `mochi-analytics-interactions` — interactions.py adapter
 
-Future Python Discord libraries should be added under `packages/` and depend on `mochi-analytics`.
+Every adapter exposes the same `attach_mochi(client, mochi, **options)` returning
+a `detach` callable. Future Python Discord libraries should be added under
+`packages/` and depend on `mochi-analytics`.
+
+> Py-cord and discord.py both install themselves under the `discord` import name,
+> so `mochi-analytics-pycord` and `mochi-analytics-discordpy` cannot share an
+> environment. Install one or the other.
+
+The adapters other than `discordpy` require Python 3.10+, which is the floor
+their underlying libraries set.
 
 ## Install
 
@@ -33,7 +47,15 @@ client = discord.Client(intents=discord.Intents.default())
 attach_mochi(client, mochi)
 ```
 
-See [docs/sdk-discordpy.md](./docs/sdk-discordpy.md) for the full discord.py guide.
+Full guides live at [docs.mochis.dev/sdks](https://docs.mochis.dev/sdks), one per
+library — [discord.py](https://docs.mochis.dev/sdks/discordpy),
+[nextcord](https://docs.mochis.dev/sdks/nextcord),
+[disnake](https://docs.mochis.dev/sdks/disnake),
+[Py-cord](https://docs.mochis.dev/sdks/pycord),
+[hikari](https://docs.mochis.dev/sdks/hikari), and
+[interactions.py](https://docs.mochis.dev/sdks/interactions). They are maintained
+in the [mochi-docs](https://github.com/mochi-analytics/mochi-docs) repo, which is
+the single source of truth for documentation.
 
 ## Development
 
@@ -42,6 +64,15 @@ Each package is an independent, pip-installable project under `packages/`.
 ```sh
 pip install -e "packages/core[dev]" -e "packages/discordpy[dev]"
 pytest packages/core packages/discordpy
+```
+
+The other adapters install alongside each other, but `pycord` needs its own
+environment because it collides with `discordpy` on the `discord` module:
+
+```sh
+pip install -e "packages/core[dev]" -e "packages/nextcord[dev]" \
+  -e "packages/disnake[dev]" -e "packages/hikari[dev]" -e "packages/interactions[dev]"
+pytest packages/core packages/nextcord packages/disnake packages/hikari packages/interactions
 ```
 
 ## Releases

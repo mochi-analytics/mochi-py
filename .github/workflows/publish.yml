@@ -12,6 +12,11 @@ on:
         options:
           - core
           - discordpy
+          - nextcord
+          - disnake
+          - pycord
+          - hikari
+          - interactions
 
 permissions:
   contents: read
@@ -21,7 +26,7 @@ jobs:
   pypi:
     name: Publish PyPI package
     runs-on: ubuntu-latest
-    # Must match the "Environment name" on both PyPI trusted publishers.
+    # Must match the "Environment name" on every PyPI trusted publisher.
     environment: pypi
     steps:
       - uses: actions/checkout@v4
