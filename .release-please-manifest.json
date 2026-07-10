@@ -5,5 +5,5 @@
   "packages/disnake": "0.1.0",
   "packages/pycord": "0.1.0",
   "packages/hikari": "0.1.0",
-  "packages/interactions": "0.1.0"
+  "packages/interactions": "0.2.0"
 }
