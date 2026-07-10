@@ -4,7 +4,7 @@ build-backend = "hatchling.build"
 
 [project]
 name = "mochi-analytics-pycord"
-version = "0.1.0"
+version = "0.2.0"
 description = "Py-cord adapter for Mochi - auto-instruments commands, guild joins/leaves, and health snapshots"
 readme = "README.md"
 license = "Apache-2.0"
