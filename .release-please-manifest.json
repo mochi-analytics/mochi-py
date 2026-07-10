@@ -1,6 +1,6 @@
 {
   "packages/core": "1.0.0",
-  "packages/discordpy": "1.0.0",
+  "packages/discordpy": "1.1.0",
   "packages/nextcord": "0.1.0",
   "packages/disnake": "0.1.0",
   "packages/pycord": "0.1.0",
