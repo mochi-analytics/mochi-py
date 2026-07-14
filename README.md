@@ -86,6 +86,11 @@ trusted publisher:
 - Repository: `mochi-py`
 - Workflow filename: `publish.yml`
 
+## Community
+
+Questions or want to share what you built? Join the
+[Mochi Discord](https://discord.gg/59z89Ke4bt).
+
 ## License
 
 Apache-2.0

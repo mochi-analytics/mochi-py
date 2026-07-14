@@ -34,6 +34,10 @@ own guild count.
 
 See the [interactions.py guide](https://mochi.software/sdks/interactions) for the full documentation.
 
+## Community
+
+Questions? Join the [Mochi Discord](https://discord.gg/59z89Ke4bt).
+
 ## License
 
 Apache-2.0

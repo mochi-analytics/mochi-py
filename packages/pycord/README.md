@@ -30,6 +30,10 @@ own guild count.
 
 See the [Py-cord guide](https://mochi.software/sdks/pycord) for the full documentation.
 
+## Community
+
+Questions? Join the [Mochi Discord](https://discord.gg/59z89Ke4bt).
+
 ## License
 
 Apache-2.0

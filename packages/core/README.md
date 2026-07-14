@@ -47,6 +47,10 @@ await mochi.shutdown()
 | `on_error` | no-op | `Callable[[Exception], None]` for dropped/failed sends. |
 | `transport` | aiohttp | Injectable `async (url, body) -> (status, text)` for testing. |
 
+## Community
+
+Questions? Join the [Mochi Discord](https://discord.gg/59z89Ke4bt).
+
 ## License
 
 Apache-2.0
