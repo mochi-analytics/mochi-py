@@ -32,7 +32,7 @@ command took, so `durationMs` is omitted unless you pass
 An `AutoShardedClient` sends one snapshot per shard, each carrying that shard's
 own guild count.
 
-See the [interactions.py guide](https://docs.mochis.dev/sdks/interactions) for the full documentation.
+See the [interactions.py guide](https://mochi.software/sdks/interactions) for the full documentation.
 
 ## License
 

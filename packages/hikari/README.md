@@ -30,7 +30,7 @@ hikari has no built-in command framework, so `attach_mochi` records commands
 straight off `InteractionCreateEvent`. For accurate `success` and `duration`,
 pass `auto_track_commands=False` and wrap your handlers with `wrap_command`.
 
-See the [hikari guide](https://docs.mochis.dev/sdks/hikari) for the full documentation.
+See the [hikari guide](https://mochi.software/sdks/hikari) for the full documentation.
 
 ## License
 

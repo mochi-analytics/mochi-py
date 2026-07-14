@@ -24,7 +24,7 @@ detach = attach_mochi(client, mochi)
 An `AutoShardedClient` sends one snapshot per shard, each carrying that shard's
 own guild count.
 
-See the [disnake guide](https://docs.mochis.dev/sdks/disnake) for the full documentation.
+See the [disnake guide](https://mochi.software/sdks/disnake) for the full documentation.
 
 ## License
 

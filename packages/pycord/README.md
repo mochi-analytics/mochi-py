@@ -28,7 +28,7 @@ detach = attach_mochi(bot, mochi)
 An `AutoShardedClient` sends one snapshot per shard, each carrying that shard's
 own guild count.
 
-See the [Py-cord guide](https://docs.mochis.dev/sdks/pycord) for the full documentation.
+See the [Py-cord guide](https://mochi.software/sdks/pycord) for the full documentation.
 
 ## License
 

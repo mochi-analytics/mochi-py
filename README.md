@@ -47,13 +47,13 @@ client = discord.Client(intents=discord.Intents.default())
 attach_mochi(client, mochi)
 ```
 
-Full guides live at [docs.mochis.dev/sdks](https://docs.mochis.dev/sdks), one per
-library — [discord.py](https://docs.mochis.dev/sdks/discordpy),
-[nextcord](https://docs.mochis.dev/sdks/nextcord),
-[disnake](https://docs.mochis.dev/sdks/disnake),
-[Py-cord](https://docs.mochis.dev/sdks/pycord),
-[hikari](https://docs.mochis.dev/sdks/hikari), and
-[interactions.py](https://docs.mochis.dev/sdks/interactions). They are maintained
+Full guides live at [mochi.software/sdks](https://mochi.software/sdks), one per
+library — [discord.py](https://mochi.software/sdks/discordpy),
+[nextcord](https://mochi.software/sdks/nextcord),
+[disnake](https://mochi.software/sdks/disnake),
+[Py-cord](https://mochi.software/sdks/pycord),
+[hikari](https://mochi.software/sdks/hikari), and
+[interactions.py](https://mochi.software/sdks/interactions). They are maintained
 in the [mochi-docs](https://github.com/mochi-analytics/mochi-docs) repo, which is
 the single source of truth for documentation.
 

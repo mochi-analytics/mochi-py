@@ -24,7 +24,7 @@ detach = attach_mochi(client, mochi)
 An `AutoShardedClient` sends one snapshot per shard, each carrying that shard's
 own guild count.
 
-See the [nextcord guide](https://docs.mochis.dev/sdks/nextcord) for the full documentation.
+See the [nextcord guide](https://mochi.software/sdks/nextcord) for the full documentation.
 
 ## License
 
