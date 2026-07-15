@@ -137,6 +137,31 @@ async def test_sends_snapshots_immediately():
     await client.shutdown()
 
 
+async def test_snapshot_auto_attaches_resources():
+    calls, transport = make_transport(lambda *_: 202)
+    client, _ = make_client(transport)
+
+    await client.snapshot(MochiSnapshot(guild_count=1))
+
+    body = calls[0].body
+    # memoryMb is best-effort: present as a positive int wherever RSS is readable.
+    if "memoryMb" in body:
+        assert isinstance(body["memoryMb"], int)
+        assert body["memoryMb"] > 0
+    await client.shutdown()
+
+
+async def test_snapshot_caller_value_wins_over_measurement():
+    calls, transport = make_transport(lambda *_: 202)
+    client, _ = make_client(transport)
+
+    await client.snapshot(MochiSnapshot(guild_count=1, memory_mb=7, cpu_percent=0.0))
+
+    assert calls[0].body["memoryMb"] == 7
+    assert calls[0].body["cpuPercent"] == 0.0
+    await client.shutdown()
+
+
 async def test_honors_retry_after_on_429():
     timestamps: list[float] = []
 

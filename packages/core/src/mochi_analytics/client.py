@@ -7,6 +7,9 @@ a bot. Mirrors the design of ``@mochi-analytics/core`` but is asyncio-native.
 from __future__ import annotations
 
 import asyncio
+import os
+import sys
+import time
 from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from typing import Any, Awaitable, Callable, Optional
@@ -33,6 +36,34 @@ class MochiError(Exception):
 
 def _iso_now() -> str:
     return datetime.now(timezone.utc).isoformat().replace("+00:00", "Z")
+
+
+def _read_rss_mb() -> Optional[int]:
+    """Current resident set size in whole megabytes, best-effort.
+
+    Tries psutil (accurate, cross-platform current RSS), then Linux /proc, then
+    ``resource.ru_maxrss`` (peak RSS) as a last resort. Returns None if none work.
+    """
+    try:
+        import psutil  # type: ignore
+
+        return round(psutil.Process().memory_info().rss / 1_048_576)
+    except Exception:
+        pass
+    try:  # Linux: field 2 of /proc/self/statm is resident pages.
+        with open("/proc/self/statm") as fh:
+            rss_pages = int(fh.read().split()[1])
+        return round(rss_pages * os.sysconf("SC_PAGE_SIZE") / 1_048_576)
+    except Exception:
+        pass
+    try:  # ru_maxrss is peak, not current: KiB on Linux, bytes on macOS/BSD.
+        import resource
+
+        maxrss = resource.getrusage(resource.RUSAGE_SELF).ru_maxrss
+        divisor = 1_048_576 if sys.platform == "darwin" else 1024
+        return round(maxrss / divisor)
+    except Exception:
+        return None
 
 
 def _header(headers: Any, name: str) -> Optional[str]:
@@ -123,6 +154,11 @@ class MochiSnapshot:
     total_shards: Optional[int] = None
     approximate_member_sum: Optional[int] = None
     ws_ping_ms: Optional[int] = None
+    #: Process CPU usage, normalized to 0-100 across all cores. Filled in
+    #: automatically when omitted; set to suppress the auto-measurement.
+    cpu_percent: Optional[float] = None
+    #: Process resident set size in megabytes. Filled in automatically when omitted.
+    memory_mb: Optional[int] = None
     ts: Optional[str] = None
 
     def to_wire(self) -> dict[str, Any]:
@@ -135,6 +171,10 @@ class MochiSnapshot:
             wire["approximateMemberSum"] = self.approximate_member_sum
         if self.ws_ping_ms is not None:
             wire["wsPingMs"] = self.ws_ping_ms
+        if self.cpu_percent is not None:
+            wire["cpuPercent"] = self.cpu_percent
+        if self.memory_mb is not None:
+            wire["memoryMb"] = self.memory_mb
         if self.ts is not None:
             wire["ts"] = self.ts
         return wire
@@ -182,6 +222,10 @@ class MochiClient:
         self._flushing: Optional[asyncio.Task[None]] = None
         self._shutdown = False
         self._session: Optional[Any] = None
+        # CPU baseline for the delta between snapshots. CPU is a rate, so the
+        # first snapshot only records memory and seeds these.
+        self._last_cpu: float = 0.0
+        self._last_cpu_at: Optional[float] = None
 
     # -- public API -----------------------------------------------------
 
@@ -203,11 +247,38 @@ class MochiClient:
         self.track(MochiEvent(type="command", name=name, **context))
 
     async def snapshot(self, snapshot: MochiSnapshot) -> None:
-        """Send a guild-count / health snapshot immediately (with retries)."""
+        """Send a guild-count / health snapshot immediately (with retries).
+
+        Process CPU and memory are measured and attached automatically; values
+        explicitly set on ``snapshot`` take precedence.
+        """
+        wire = snapshot.to_wire()
+        for key, value in self._collect_resources().items():
+            wire.setdefault(key, value)  # caller-provided values win
         try:
-            await self._send(self._snapshot_url, snapshot.to_wire())
+            await self._send(self._snapshot_url, wire)
         except Exception as error:  # never propagate into the caller
             self._report(error)
+
+    def _collect_resources(self) -> dict[str, Any]:
+        """Sample process CPU (0-100 across all cores, since the last snapshot)
+        and resident memory. Best-effort; failures yield an empty dict."""
+        out: dict[str, Any] = {}
+        rss = _read_rss_mb()
+        if rss is not None:
+            out["memoryMb"] = rss
+        try:
+            now = time.monotonic()
+            cpu = time.process_time()  # cumulative user+system CPU seconds
+            if self._last_cpu_at is not None and now > self._last_cpu_at:
+                cores = os.cpu_count() or 1
+                pct = (cpu - self._last_cpu) / (now - self._last_cpu_at) / cores * 100
+                out["cpuPercent"] = max(0.0, round(pct, 1))
+            self._last_cpu = cpu
+            self._last_cpu_at = now
+        except Exception:
+            pass
+        return out
 
     async def flush(self) -> None:
         """Drain the queue. Safe to call concurrently; flushes are serialized."""
